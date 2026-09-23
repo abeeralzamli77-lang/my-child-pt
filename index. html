@@ -1,1 +1,537 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طفلي PT — My Child PT</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+    min-height: 100vh;
+    padding: 16px;
+    color: #1a1a1a;
+  }
+  .container { max-width: 600px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #2e7d32, #1565c0);
+    color: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  header h1 { font-size: 22px; margin-bottom: 4px; }
+  header p { font-size: 13px; opacity: 0.9; }
+  .lang-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255,255,255,0.25);
+    color: white;
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .lang-btn:hover { background: white; color: #2e7d32; }
+  body[dir="ltr"] .lang-btn { left: auto; right: 12px; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .skill-btn {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 14px 6px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .skill-btn:hover {
+    border-color: #2e7d32;
+    background: #e8f5e9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(46,125,50,0.2);
+  }
+  .skill-btn .icon { font-size: 24px; display: block; margin-bottom: 4px; }
+  .detail-screen {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .detail-screen.active { display: block; }
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e8f5e9;
+    margin-bottom: 16px;
+  }
+  .detail-header .big-icon { font-size: 40px; }
+  .detail-header h2 { font-size: 20px; color: #2e7d32; }
+  .detail-header .en { font-size: 13px; color: #666; font-weight: normal; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1565c0;
+    margin: 18px 0 10px;
+  }
+  .muscle-card {
+    background: #f1f8e9;
+    border-right: 4px solid #2e7d32;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  body[dir="ltr"] .muscle-card { border-right: none; border-left: 4px solid #2e7d32; }
+  .muscle-name { font-weight: 700; color: #2e7d32; font-size: 14px; }
+  .muscle-name .en { color: #558b2f; font-weight: 500; font-size: 12px; }
+  .weakness {
+    background: #fff8e1;
+    border-right: 4px solid #f9a825;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  body[dir="ltr"] .weakness { border-right: none; border-left: 4px solid #f9a825; }
+  .weakness-title { font-weight: 700; color: #e65100; font-size: 13px; margin-bottom: 6px; }
+  .weakness-body { font-size: 13px; line-height: 1.7; color: #333; }
+  .weakness-body strong { color: #bf360c; }
+  .exercise {
+    background: #e3f2fd;
+    border-right: 4px solid #1565c0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  body[dir="ltr"] .exercise { border-right: none; border-left: 4px solid #1565c0; }
+  .exercise-name { font-weight: 700; color: #0d47a1; font-size: 13px; }
+  .exercise-dose { font-size: 12px; color: #555; margin-top: 4px; }
+  .assessment {
+    background: #f3e5f5;
+    border-right: 4px solid #6a1b9a;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  body[dir="ltr"] .assessment { border-right: none; border-left: 4px solid #6a1b9a; }
+  .back-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+  }
+  .back-btn:hover { background: #1b5e20; }
+  .notice {
+    background: #ffebee;
+    border-right: 4px solid #c62828;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    color: #b71c1c;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  body[dir="ltr"] .notice { border-right: none; border-left: 4px solid #c62828; }
+</style>
+</head>
+<body dir="rtl">
+<div class="container">
+  <header>
+    <button class="lang-btn" onclick="toggleLang()" id="langBtn">English</button>
+    <h1 id="appTitle">🧒 طفلي PT</h1>
+    <p id="appSubtitle">Pediatric Physical Therapy — تحليل المهارات الحركية</p>
+  </header>
+  <div id="skillsScreen">
+    <div class="section-title" id="chooseSkillTitle">🎯 اختر المهارة — Select Skill</div>
+    <div class="skills-grid" id="skillsGrid"></div>
+  </div>
+  <div id="detailScreen" class="detail-screen">
+    <div class="detail-header">
+      <span class="big-icon" id="detailIcon">🚶</span>
+      <div>
+        <h2 id="detailTitle">المشي</h2>
+        <div class="en" id="detailEn">Walking</div>
+      </div>
+    </div>
+    <div id="detailContent"></div>
+    <button class="back-btn" onclick="backToSkills()" id="backBtn">◀ العودة للمهارات</button>
+  </div>
+</div>
+<script>
+const DATA = {
+  ar: {
+    appTitle: "🧒 طفلي PT",
+    appSubtitle: "Pediatric Physical Therapy — تحليل المهارات الحركية",
+    chooseSkill: "🎯 اختر المهارة",
+    back: "◀ العودة للمهارات",
+    langBtn: "English",
+    musclesTitle: "🟢 العضلات المطلوبة",
+    weaknessTitle: "⚠️ تأثير ضعف كل عضلة",
+    exercisesTitle: "🏋️ التمارين المقترحة",
+    assessmentTitle: "📊 التقييم المرتبط",
+    notice: "⚠️ هذا المحتوى تعليمي إرشادي.",
+    impactLabel: "التأثير:",
+    exerciseLabel: "التمرين:",
+    progressionLabel: "التدرج:",
+    soonMsg: "🚧 قيد التطوير"
+  },
+  en: {
+    appTitle: "🧒 My Child PT",
+    appSubtitle: "Pediatric Physical Therapy — Gross Motor Skills",
+    chooseSkill: "🎯 Select Skill",
+    back: "◀ Back to Skills",
+    langBtn: "العربية",
+    musclesTitle: "🟢 Key Muscles",
+    weaknessTitle: "⚠️ Weakness Impact",
+    exercisesTitle: "🏋️ Recommended Exercises",
+    assessmentTitle: "📊 Assessment",
+    notice: "⚠️ Educational content only.",
+    impactLabel: "Impact:",
+    exerciseLabel: "Exercise:",
+    progressionLabel: "Progression:",
+    soonMsg: "🚧 Under development"
+  }
+};
+const SKILLS = [
+  { id: "head", ar: "التحكم بالرأس", en: "Head Control", icon: "🧠" },
+  { id: "rolling", ar: "التقلب", en: "Rolling", icon: "🔄" },
+  { id: "sitting", ar: "الجلوس", en: "Sitting", icon: "🪑" },
+  { id: "crawl", ar: "الحبو", en: "Crawling", icon: "🐛" },
+  { id: "standing", ar: "الوقوف", en: "Standing", icon: "🧍" },
+  { id: "walking", ar: "المشي", en: "Walking", icon: "🚶" },
+  { id: "stairs", ar: "الدرج", en: "Stairs", icon: "🪜" },
+  { id: "running", ar: "الجري", en: "Running", icon: "🏃" },
+  { id: "jumping", ar: "القفز", en: "Jumping", icon: "🦘" },
+  { id: "balance", ar: "التوازن", en: "Balance", icon: "⚖️" }
+];
+const CONTENT = {
+  walking: {
+    ar: {
+      muscles: [
+        { name: "باسطات الورك", en: "Hip Extensors", detail: "Gluteus Maximus, Hamstrings" },
+        { name: "الفخذ الأمامية", en: "Quadriceps", detail: "Vastus muscles, Rectus femoris" },
+        { name: "الفخذ الخلفية", en: "Hamstrings", detail: "Biceps femoris, Semitendinosus" },
+        { name: "الظنبوبي الأمامي", en: "Tibialis Anterior", detail: "Dorsiflexion" },
+        { name: "السمانة", en: "Gastrocnemius/Soleus", detail: "Push-off" }
+      ],
+      weaknesses: [
+        { title: "ضعف باسطات الورك", impact: "ميل الجذع الأمامي، قصر خطوة.", exercise: "Bridging", progression: "أرض ← Swiss ball ← وقوف" },
+        { title: "ضعف الفخذ الأمامية", impact: "Crouch gait، سقوط متكرر.", exercise: "Sit to Stand", progression: "كرسي مرتفع ← منخفض ← Squat" },
+        { title: "ضعف الفخذ الخلفية", impact: "فرط بسط الركبة.", exercise: "Prone leg curls", progression: "سلبي ← مساعد ← مقاوم" },
+        { title: "ضعف الظنبوبي الأمامي", impact: "Foot drop، تعثر.", exercise: "Ankle dorsiflexion", progression: "سلبية ← نشطة ← مقاومة" },
+        { title: "ضعف السمانة", impact: "ضعف Push-off.", exercise: "Heel raises", progression: "ثنائي ← فردي ← بوزن" }
+      ],
+      exercises: [
+        { name: "Bridging", dose: "3 × 10 يومياً" },
+        { name: "Sit to Stand", dose: "3 × 8 — 5 أيام/أسبوع" },
+        { name: "Step Training", dose: "2 × 10 لكل قدم" },
+        { name: "Treadmill", dose: "15-20 دقيقة × 3/أسبوع" }
+      ],
+      assessment: [
+        "GMFM: المنطقة E (63–72)",
+        "MMT: 0–5 للعضلات الخمس",
+        "ROM: الورك، الركبة، الكاحل",
+        "Tone: Ashworth Scale",
+        "Balance: PBS"
+      ]
+    },
+    en: {
+      muscles: [
+        { name: "Hip Extensors", en: "باسطات الورك", detail: "Gluteus Maximus, Hamstrings" },
+        { name: "Quadriceps", en: "الفخذ الأمامية", detail: "Vastus muscles, Rectus femoris" },
+        { name: "Hamstrings", en: "الفخذ الخلفية", detail: "Biceps femoris, Semitendinosus" },
+        { name: "Tibialis Anterior", en: "الظنبوبي الأمامي", detail: "Dorsiflexion" },
+        { name: "Gastrocnemius/Soleus", en: "السمانة", detail: "Push-off" }
+      ],
+      weaknesses: [
+        { title: "Hip Extensors Weakness", impact: "Trunk lean forward, short step.", exercise: "Bridging", progression: "Floor → Swiss ball → Standing" },
+        { title: "Quadriceps Weakness", impact: "Crouch gait, falls.", exercise: "Sit to Stand", progression: "High chair → low → Squat" },
+        { title: "Hamstrings Weakness", impact: "Knee hyperextension.", exercise: "Prone leg curls", progression: "Passive → assisted → resisted" },
+        { title: "Tibialis Anterior Weakness", impact: "Foot drop, tripping.", exercise: "Ankle dorsiflexion", progression: "Passive → active → resisted" },
+        { title: "Gastrocnemius Weakness", impact: "Weak push-off.", exercise: "Heel raises", progression: "Bilateral → single → weighted" }
+      ],
+      exercises: [
+        { name: "Bridging", dose: "3 × 10 daily" },
+        { name: "Sit to Stand", dose: "3 × 8 — 5 days/week" },
+        { name: "Step Training", dose: "2 × 10 each leg" },
+        { name: "Treadmill", dose: "15-20 min × 3/week" }
+      ],
+      assessment: [
+        "GMFM: Dimension E (63–72)",
+        "MMT: 0–5 for 5 muscles",
+        "ROM: Hip, knee, ankle",
+        "Tone: Ashworth Scale",
+        "Balance: PBS"
+      ]
+    }
+  },
+  sitting: {
+    ar: {
+      muscles: [
+        { name: "باسطات الجذع", en: "Trunk Extensors", detail: "Erector spinae" },
+        { name: "قابضات البطن", en: "Abdominals", detail: "Rectus, Obliques" },
+        { name: "مثبتات الورك", en: "Hip Stabilizers", detail: "Gluteals" }
+      ],
+      weaknesses: [
+        { title: "ضعف باسطات الجذع", impact: "ميل للأمام، عدم استقرار.", exercise: "Trunk extension", progression: "مدعوم ← حر" },
+        { title: "ضعف البطن", impact: "صعوبة رفع الجذع.", exercise: "Curl-ups", progression: "استلقاء ← جلوس جزئي ← كامل" }
+      ],
+      exercises: [
+        { name: "Sitting Balance", dose: "5 دقائق × 3/يوم" },
+        { name: "Reaching in Sitting", dose: "3 × 10" }
+      ],
+      assessment: [
+        "GMFM: المنطقة B (15–36)",
+        "Trunk Control Test"
+      ]
+    },
+    en: {
+      muscles: [
+        { name: "Trunk Extensors", en: "باسطات الجذع", detail: "Erector spinae" },
+        { name: "Abdominals", en: "قابضات البطن", detail: "Rectus, Obliques" },
+        { name: "Hip Stabilizers", en: "مثبتات الورك", detail: "Gluteals" }
+      ],
+      weaknesses: [
+        { title: "Trunk Extensors Weakness", impact: "Forward lean, instability.", exercise: "Trunk extension", progression: "Supported → free" },
+        { title: "Abdominal Weakness", impact: "Difficulty lifting trunk.", exercise: "Curl-ups", progression: "Supine → partial → full" }
+      ],
+      exercises: [
+        { name: "Sitting Balance", dose: "5 min × 3/day" },
+        { name: "Reaching in Sitting", dose: "3 × 10" }
+      ],
+      assessment: [
+        "GMFM: Dimension B (15–36)",
+        "Trunk Control Test"
+      ]
+    }
+  },
+  head: {
+    ar: {
+      muscles: [
+        { name: "قابضات الرقبة", en: "Deep Neck Flexors", detail: "Longus capitis/colli" },
+        { name: "باسطات الرقبة", en: "Neck Extensors", detail: "Splenius" }
+      ],
+      weaknesses: [
+        { title: "ضعف قابضات الرقبة", impact: "عدم تثبيت الرأس.", exercise: "Chin tucks", progression: "مدعوم ← حر" },
+        { title: "ضعف باسطات الرقبة", impact: "Head lag.", exercise: "Prone head lifting", progression: "صدر الأم ← سطح ← ألعاب" }
+      ],
+      exercises: [
+        { name: "Tummy Time", dose: "5-10 دقائق × 3-4/يوم" },
+        { name: "Visual Tracking", dose: "3 دقائق" }
+      ],
+      assessment: [
+        "GMFM: المنطقة A (1–5)",
+        "Head Control Test"
+      ]
+    },
+    en: {
+      muscles: [
+        { name: "Deep Neck Flexors", en: "قابضات الرقبة", detail: "Longus capitis/colli" },
+        { name: "Neck Extensors", en: "باسطات الرقبة", detail: "Splenius" }
+      ],
+      weaknesses: [
+        { title: "Neck Flexors Weakness", impact: "Cannot stabilize head.", exercise: "Chin tucks", progression: "Supported → free" },
+        { title: "Neck Extensors Weakness", impact: "Head lag.", exercise: "Prone head lifting", progression: "Parent chest → surface → toys" }
+      ],
+      exercises: [
+        { name: "Tummy Time", dose: "5-10 min × 3-4/day" },
+        { name: "Visual Tracking", dose: "3 min" }
+      ],
+      assessment: [
+        "GMFM: Dimension A (1–5)",
+        "Head Control Test"
+      ]
+    }
+  },
+  standing: {
+    ar: {
+      muscles: [
+        { name: "الفخذ الأمامية", en: "Quadriceps", detail: "Knee extension" },
+        { name: "باسطات الورك", en: "Hip Extensors", detail: "Gluteus Maximus" },
+        { name: "السمانة", en: "Gastrocnemius", detail: "Ankle stability" }
+      ],
+      weaknesses: [
+        { title: "ضعف الفخذ الأمامية", impact: "Knee buckling.", exercise: "Standing at support", progression: "بمساندة ← بدون" },
+        { title: "ضعف باسطات الورك", impact: "ميل للأمام.", exercise: "Standing hip extension", progression: "حائط ← حر" }
+      ],
+      exercises: [
+        { name: "Standing Frame", dose: "20-30 دقيقة/يوم" },
+        { name: "Sit to Stand", dose: "3 × 8" }
+      ],
+      assessment: [
+        "GMFM: المنطقة D (51–62)",
+        "Standing Balance"
+      ]
+    },
+    en: {
+      muscles: [
+        { name: "Quadriceps", en: "الفخذ الأمامية", detail: "Knee extension" },
+        { name: "Hip Extensors", en: "باسطات الورك", detail: "Gluteus Maximus" },
+        { name: "Gastrocnemius", en: "السمانة", detail: "Ankle stability" }
+      ],
+      weaknesses: [
+        { title: "Quadriceps Weakness", impact: "Knee buckling.", exercise: "Standing at support", progression: "Supported → free" },
+        { title: "Hip Extensors Weakness", impact: "Forward lean.", exercise: "Standing hip extension", progression: "Wall → free" }
+      ],
+      exercises: [
+        { name: "Standing Frame", dose: "20-30 min/day" },
+        { name: "Sit to Stand", dose: "3 × 8" }
+      ],
+      assessment: [
+        "GMFM: Dimension D (51–62)",
+        "Standing Balance"
+      ]
+    }
+  },
+  jumping: {
+    ar: {
+      muscles: [
+        { name: "السمانة", en: "Gastrocnemius", detail: "Push-off" },
+        { name: "الفخذ الأمامية", en: "Quadriceps", detail: "Landing" },
+        { name: "الجذع", en: "Core", detail: "Stability" }
+      ],
+      weaknesses: [
+        { title: "ضعف السمانة", impact: "قفزة منخفضة.", exercise: "Heel raises", progression: "ثنائي ← فردي" },
+        { title: "ضعف الفخذ الأمامية", impact: "سقوط عند الهبوط.", exercise: "Squats", progression: "بسيط ← مقاوم" }
+      ],
+      exercises: [
+        { name: "Two-foot Jumping", dose: "3 × 5" },
+        { name: "Hopping in Place", dose: "10 × 3" }
+      ],
+      assessment: [
+        "GMFM: المنطقة E (85–88)",
+        "Jump Distance Test"
+      ]
+    },
+    en: {
+      muscles: [
+        { name: "Gastrocnemius", en: "السمانة", detail: "Push-off" },
+        { name: "Quadriceps", en: "الفخذ الأمامية", detail: "Landing" },
+        { name: "Core", en: "الجذع", detail: "Stability" }
+      ],
+      weaknesses: [
+        { title: "Gastrocnemius Weakness", impact: "Low jump.", exercise: "Heel raises", progression: "Bilateral → single" },
+        { title: "Quadriceps Weakness", impact: "Falls on landing.", exercise: "Squats", progression: "Simple → resisted" }
+      ],
+      exercises: [
+        { name: "Two-foot Jumping", dose: "3 × 5" },
+        { name: "Hopping in Place", dose: "10 × 3" }
+      ],
+      assessment: [
+        "GMFM: Dimension E (85–88)",
+        "Jump Distance Test"
+      ]
+    }
+  }
+};
+const AVAILABLE = ["walking", "sitting", "head", "standing", "jumping"];
+let currentLang = "ar";
+function renderSkills() {
+  const grid = document.getElementById("skillsGrid");
+  grid.innerHTML = "";
+  SKILLS.forEach(skill => {
+    const btn = document.createElement("div");
+    btn.className = "skill-btn";
+    btn.onclick = () => openSkill(skill.id);
+    btn.innerHTML = `<span class="icon">${skill.icon}</span>${skill[currentLang]}`;
+    grid.appendChild(btn);
+  });
+  document.getElementById("chooseSkillTitle").textContent = DATA[currentLang].chooseSkill;
+}
+function openSkill(id) {
+  if (!AVAILABLE.includes(id)) {
+    alert(DATA[currentLang].soonMsg);
+    return;
+  }
+  const skill = SKILLS.find(s => s.id === id);
+  const content = CONTENT[id][currentLang];
+  const t = DATA[currentLang];
+  document.getElementById("detailIcon").textContent = skill.icon;
+  document.getElementById("detailTitle").textContent = skill[currentLang];
+  document.getElementById("detailEn").textContent = currentLang === "ar" ? skill.en : skill.ar;
+  let html = "";
+  html += `<div class="section-title">${t.musclesTitle}</div>`;
+  content.muscles.forEach(m => {
+    html += `<div class="muscle-card">
+      <div class="muscle-name">${m.name}${currentLang === "ar" ? ` <span class="en">— ${m.en}</span>` : ""}</div>
+      <div style="font-size:12px;color:#555;">${m.detail}</div>
+    </div>`;
+  });
+  html += `<div class="section-title">${t.weaknessTitle}</div>`;
+  content.weaknesses.forEach(w => {
+    html += `<div class="weakness">
+      <div class="weakness-title">${w.title}</div>
+      <div class="weakness-body">
+        <strong>${t.impactLabel}</strong> ${w.impact}<br>
+        <strong>${t.exerciseLabel}</strong> ${w.exercise}<br>
+        <strong>${t.progressionLabel}</strong> ${w.progression}
+      </div>
+    </div>`;
+  });
+  html += `<div class="section-title">${t.exercisesTitle}</div>`;
+  content.exercises.forEach(e => {
+    html += `<div class="exercise">
+      <div class="exercise-name">${e.name}</div>
+      <div class="exercise-dose">${e.dose}</div>
+    </div>`;
+  });
+  html += `<div class="section-title">${t.assessmentTitle}</div>`;
+  html += `<div class="assessment">`;
+  content.assessment.forEach(a => { html += `• ${a}<br>`; });
+  html += `</div>`;
+  html += `<div class="notice">${t.notice}</div>`;
+  document.getElementById("detailContent").innerHTML = html;
+  document.getElementById("backBtn").textContent = t.back;
+  document.getElementById("skillsScreen").style.display = "none";
+  document.getElementById("detailScreen").classList.add("active");
+  window.scrollTo(0, 0);
+}
+function backToSkills() {
+  document.getElementById("skillsScreen").style.display = "block";
+  document.getElementById("detailScreen").classList.remove("active");
+  window.scrollTo(0, 0);
+}
+function toggleLang() {
+  currentLang = currentLang === "ar" ? "en" : "ar";
+  const root = document.getElementById("htmlRoot");
+  const body = document.body;
+  if (currentLang === "ar") {
+    root.setAttribute("lang", "ar");
+    root.setAttribute("dir", "rtl");
+    body.setAttribute("dir", "rtl");
+  } else {
+    root.setAttribute("lang", "en");
+    root.setAttribute("dir", "ltr");
+    body.setAttribute("dir", "ltr");
+  }
+  document.getElementById("appTitle").textContent = DATA[currentLang].appTitle;
+  document.getElementById("appSubtitle").textContent = DATA[currentLang].appSubtitle;
+  document.getElementById("langBtn").textContent = DATA[currentLang].langBtn;
+  renderSkills();
+}
+renderSkills();
+</script>
+</body>
+</html>
